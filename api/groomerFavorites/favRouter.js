@@ -27,7 +27,9 @@ router.get('/', async (req, res) => {
 //============================//
 //  DELETE groomer by id //
 //============================//
-//router.delete('/:id', authRequired, async (req, res) => {
+// The routes work without 'authRequired'. This code will be needed to verify id token. 
+// We were not able to get 'authRequired' working at this time.
+// router.delete('/:id', authRequired, async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     if (!req.params.id) {

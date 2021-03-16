@@ -22,8 +22,7 @@ router.get('/', authRequired, async (req, res) => {
 /******************************************************************************
  *                      GET an existing customers pet by pet id
  ******************************************************************************/
-// router.get('/:id', authRequired, async (req, res) => {
-  router.get('/:id',  async (req, res) => {
+router.get('/:id',  authRequired, async (req, res) => {
   try {
     const data = await petsModel.getById(req.query.customer_id, req.params.id);
     res.status(200).json(data);
