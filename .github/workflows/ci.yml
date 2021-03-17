@@ -32,4 +32,4 @@ jobs:
       # Run the NPM install command before proceeding
       - run: npm install
 
-      - run: npm run lint
+      # - run: npm run lint

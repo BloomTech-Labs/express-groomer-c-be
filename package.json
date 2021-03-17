@@ -11,7 +11,7 @@
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
     "knex": "npx knex --knexfile config/knexfile.js",
-    "tests": "npx jest --forceExit",
+    "test": "npx jest",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit"
   },
   "jest": {
@@ -72,7 +72,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^25.2.4",
     "nodemon": "^2.0.5",
-    "prettier": "^2.0.5",
+    "prettier": "^2.2.1",
     "supertest": "^4.0.2"
   }
 }
