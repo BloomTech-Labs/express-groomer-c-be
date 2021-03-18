@@ -99,10 +99,13 @@ router.delete('/:id', authRequired, async (req, res) => {
 /******************************************************************************
  *                       POST groomer licence by id
  ******************************************************************************/
-router.post('/license-upload/:id', authRequired, async (req, res) => {
+router.post('/license-upload/:id', async (req, res) => {
+console.log("outside function", req.body.location)
   let img;
   singleUpload(req, res, async () => {
-    img = req.file.location;
+    console.log("inside function",req.body.location)
+    
+    img = req.body.location;
     const user = await groomer.getById(req.params.id);
     if (user !== undefined) {
       //if not undefined update user
