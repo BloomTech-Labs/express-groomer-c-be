@@ -15,7 +15,7 @@ router.get('/', authRequired, async (req, res) => {
     const data = await petsModel.getAll(req.query.customer_id);
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error: 500' });
+    res.status(500).json({ message: 'Error: 500!', error: err });
   }
 });
 
@@ -27,7 +27,7 @@ router.get('/:id', authRequired, async (req, res) => {
     const data = await petsModel.getById(req.query.customer_id, req.params.id);
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error: 500' });
+    res.status(500).json({ message: 'Error: 500!!', err });
   }
 });
 
@@ -101,12 +101,12 @@ router.post('/image-upload/:id', authRequired, async (req, res) => {
   });
 });
 /******************************************************************************
- *                       POST pet photo by id
+ *                       POST pet vaccination by id
  ******************************************************************************/
 router.post('/vaccination-upload/:id', authRequired, async (req, res) => {
   let img;
   singleUpload(req, res, async () => {
-    img = req.file.location;
+    img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
       const new_data = await petsModel.update(req.query.customer_id, req.params.id, {vaccination_image_url: img});
