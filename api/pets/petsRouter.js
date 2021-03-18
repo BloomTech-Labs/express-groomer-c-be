@@ -10,7 +10,10 @@ const singleUpload = upload.single('image');
 /******************************************************************************
  *                      GET all of an existing customers pets
  ******************************************************************************/
-router.get('/', authRequired, async (req, res) => {
+// BUG: If authentication is used to reach this endpoint, the customer dashboard
+// crashes when accessed after login. Using it open / unsecured temporarily.
+// router.get('/', authRequired, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const data = await petsModel.getAll(req.query.customer_id);
     res.status(200).json(data);
