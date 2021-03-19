@@ -93,11 +93,11 @@ router.delete('/:id', authRequired, async (req, res) => {
 router.post('/image-upload/:id', authRequired, async (req, res) => {
   let img;
   singleUpload(req, res, async () => {
-    img = req.file.location;
+    img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
       const new_data = await petsModel.update(req.query.customer_id, req.params.id, {pet_image_url: img});
-      res.status(200).json({ message: 'Pet updated', Profile: new_data });
+      res.status(200).json({ message: 'Pet image updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
     }
@@ -113,7 +113,7 @@ router.post('/vaccination-upload/:id', authRequired, async (req, res) => {
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
       const new_data = await petsModel.update(req.query.customer_id, req.params.id, {vaccination_image_url: img});
-      res.status(200).json({ message: 'Pet updated', Profile: new_data });
+      res.status(200).json({ message: 'Pet vaccination updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
     }
