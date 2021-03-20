@@ -36,6 +36,7 @@ exports.seed = async function (knex) {
       special_requests: 'Please clean teeth',
       pet_temperament: 'Hungry',
       shots_current: true,
+      vaccination_image_url: 'https://res.cloudinary.com/expressgroomer/image/upload/v1616112390/r0jafligwdmjxnz2boi8.jpg',
     },
     {
       customer_id: '00u13ol5x1kmKxVJU4x7',

@@ -10,12 +10,15 @@ const singleUpload = upload.single('image');
 /******************************************************************************
  *                      GET all of an existing customers pets
  ******************************************************************************/
-router.get('/', authRequired, async (req, res) => {
+// BUG: If authentication is used to reach this endpoint, the customer dashboard
+// crashes when accessed after login. Using it open / unsecured temporarily.
+// router.get('/', authRequired, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const data = await petsModel.getAll(req.query.customer_id);
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error: 500' });
+    res.status(500).json({ message: 'Error: 500!', error: err });
   }
 });
 
@@ -27,7 +30,7 @@ router.get('/:id',  authRequired, async (req, res) => {
     const data = await petsModel.getById(req.query.customer_id, req.params.id);
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error: 500' });
+    res.status(500).json({ message: 'Error: 500!!', err });
   }
 });
 
@@ -90,27 +93,27 @@ router.delete('/:id', authRequired, async (req, res) => {
 router.post('/image-upload/:id', authRequired, async (req, res) => {
   let img;
   singleUpload(req, res, async () => {
-    img = req.file.location;
+    img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
       const new_data = await petsModel.update(req.query.customer_id, req.params.id, {pet_image_url: img});
-      res.status(200).json({ message: 'Pet updated', Profile: new_data });
+      res.status(200).json({ message: 'Pet image updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
     }
   });
 });
 /******************************************************************************
- *                       POST pet photo by id
+ *                       POST pet vaccination by id
  ******************************************************************************/
 router.post('/vaccination-upload/:id', authRequired, async (req, res) => {
   let img;
   singleUpload(req, res, async () => {
-    img = req.file.location;
+    img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
       const new_data = await petsModel.update(req.query.customer_id, req.params.id, {vaccination_image_url: img});
-      res.status(200).json({ message: 'Pet updated', Profile: new_data });
+      res.status(200).json({ message: 'Pet vaccination updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
     }
