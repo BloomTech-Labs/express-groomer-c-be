@@ -113,7 +113,7 @@ router.post('/license-upload/:id', async (req, res) => {
       });
       res
         .status(200)
-        .json({ message: 'Groomer profile updated', Profile: edits });
+        .json({ message: 'Groomer License Image', Profile: edits });
     } else {
       res.status(400).json({ message: 'Profile does not exists' });
     }
