@@ -19,20 +19,24 @@ AuthClient.setCredentials({
 
 const calendar = google.calendar({ version: 'v3', auth: AuthClient })
 
+const eventStartTime = new Date()
 const eventEndTime = new Date()
 eventEndTime.setMinutes(eventEndTime.getMinutes() + 30)
+
+let clientnumber = 14436267118
+let eventtest = 1
 
 const event = {
     summary: 'Dog groom',
     location: '13009 Oakland Rd, Ridgely, MD 21660',
     description: "Groomingzzzz",
     start: {
-        dateTime: Date.now(),
-        timeZone: 'America/Baltimore',
+        dateTime: eventStartTime,
+        timeZone: 'America/New_York',
     },
     end: {
         dateTime: eventEndTime,
-        timeZone: 'America/Baltimore',
+        timeZone: 'America/New_York',
     }
 }
 
@@ -43,29 +47,40 @@ router.all('/', function (req, res, next) {
   });
 
 router.get('/calendar', function (req, res) {
-    res.status(200).json(calendar);
+    res.status(200).json(google.calendars.get({calendarId: 'primary'}));
 })
 
 router.post('/calendar', function (req, res) {
     const calendar = google.calendar({ version: 'v3', auth: AuthClient })
     try{
-        calendar.freebusy.query(
-            {
-                resource: {
-                    timeMin: Date.now(),
-                    timeMax: eventEndTime,
-                    timeZone: 'America/Baltimore',
-                    items: [{ id: 'primary' }],
-                },
-        },
-    (err, res) => {
-        const eventsArr = res.data.calendars.primary.busy
-        newcalendar = calendar.events.insert({calendarId: 'primary', resource: event})
-        if (eventsArr.length === 0) {    
-        res.status(200).json({message: "event added", calendar: newcalendar})
-    } 
-    } 
-        )} catch (err) {res.status(500).json({message: "Add event failed", calendar: calendar})}
+        calendar.events.insert({calendarId: 'primary', resource: event},
+        // err =>
+        //     {if (err) return console.log("Could not insert event.", err)}
+        )
+        .then(twilio.messages.create({
+            to: clientnumber,
+            from: process.env.TWILIO_PHONE,
+            body: 'You have a new event!'
+        }))
+        .then(res.status(200).json({message: 'event added', calendar: calendar}))
+        } 
+        catch (err) {res.status(500).json({message: "Add event failed,", err, calendar: calendar})}
+})
+
+router.delete('/calendar', function (req, res) {
+    const calendar = google.calendar({ version: 'v3', auth: AuthClient })
+    console.log(calendar.events.list({calendarId: 'primary'}))
+    try{
+        calendar.events.delete({calendarId: 'primary', eventId: eventtest },
+        err =>
+            {if (err) return console.log("Could not delete event.", err)})
+            .then(twilio.messages.create({
+                to: clientnumber,
+                from: process.env.TWILIO_PHONE,
+                body: 'Your event was removed!'
+            }))
+            .then(res.status(200).json({message: 'event deleted', calendar: calendar}))
+    } catch (err) {res.status(500).json({message: "Delete event failed,", calendar: calendar})}
 })
 
 
