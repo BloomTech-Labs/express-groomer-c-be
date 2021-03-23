@@ -35,7 +35,7 @@ exports.seed = async function (knex) {
       lat: 32.6718063,
       lng: -96.9329749,
       personal_calendly_link: 'https://calendly.com/wags_to_riches',
-      license_image_url: 'https://cdn.freshfruitportal.com/2020/07/hot81z-1024x866.jpg'
+      license_image_url: ''
     },
     {
       user_id: '00ultx74kMUmEW8054x6',
