@@ -1,3 +1,4 @@
+require('dotenv').config();
 const app = require('./api/app.js');
 require('dotenv').config()
 
