@@ -16,6 +16,7 @@ exports.up = async(knex) => {
             .onDelete('cascade')
             .onUpdate('cascade')
             .notNull();
+
             
     });
 };
