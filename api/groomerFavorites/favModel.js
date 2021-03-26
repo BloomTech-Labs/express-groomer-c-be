@@ -9,10 +9,10 @@ const getById = async (id) => {
 };
 const getFavorite = async (id) => {
     return db('groomer_favorites')
-        .join('groomer', 'groomer.id', '=', 'groomer_favorites.groom_id')
+        .join('groomer', 'groomer.id', '=', 'groomer_favorites.id')
         .where('groomer_favorites.groom_id', id)
         .select(
-            'groomer.given_name''
+            'groomer.given_name',
         )
         
 }
