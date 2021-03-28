@@ -16,13 +16,15 @@ router.all('/', function (req, res, next) {
 //  GET all favorite groomers //
 //============================//
 router.get('/', async (req, res) => {
-  try{
+  try {
     const data = await groomerFavModel.getAll();
     res.status(200).json(data);
-  } catch (err){
-    res.status(500).json({ message: err.message})
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
 });
+
+
 
 //============================//
 //  DELETE groomer by id //
@@ -36,7 +38,7 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ message: 'Missing required id.' });
     }
     await groomerFavModel.remove(req.params.id);
-    res.status(200).json({ message: 'User was deleted' });
+    res.status(200).json({ message: 'Selected favorite groomer was deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -1,9 +1,8 @@
-
-exports.up = async(knex) => {
+exports.up = async (knex) => {
     await knex.schema.createTable('groomer_favorites', (table) => {
         table.increments('id');
         table
-            .string('cust_id')
+            .string('customer_id')
             .references('user_id')
             .inTable('customer')
             .onDelete('cascade')
@@ -17,10 +16,9 @@ exports.up = async(knex) => {
             .onUpdate('cascade')
             .notNull();
 
-            
     });
 };
 
-exports.down = async(knex) => {
+exports.down = async (knex) => {
     await knex.schema.dropTableIfExists('groomer_favorites');
 };
