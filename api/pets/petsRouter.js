@@ -6,7 +6,6 @@ const router = express.Router();
 const upload = require('../../services/image-upload');
 const singleUpload = upload.single('image');
 
-
 /******************************************************************************
  *                      GET all of an existing customers pets
  ******************************************************************************/
@@ -25,7 +24,7 @@ router.get('/', async (req, res) => {
 /******************************************************************************
  *                      GET an existing customers pet by pet id
  ******************************************************************************/
-router.get('/:id',  authRequired, async (req, res) => {
+router.get('/:id', authRequired, async (req, res) => {
   try {
     const data = await petsModel.getById(req.query.customer_id, req.params.id);
     res.status(200).json(data);
@@ -62,7 +61,11 @@ router.put('/:id', authRequired, async (req, res) => {
   try {
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
-      const new_data = await petsModel.update(req.query.customer_id, req.params.id, req.body);
+      const new_data = await petsModel.update(
+        req.query.customer_id,
+        req.params.id,
+        req.body
+      );
       res.status(200).json({ message: 'Pet updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
@@ -96,7 +99,11 @@ router.post('/image-upload/:id', authRequired, async (req, res) => {
     img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
-      const new_data = await petsModel.update(req.query.customer_id, req.params.id, {pet_image_url: img});
+      const new_data = await petsModel.update(
+        req.query.customer_id,
+        req.params.id,
+        { pet_image_url: img }
+      );
       res.status(200).json({ message: 'Pet image updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
@@ -112,8 +119,14 @@ router.post('/vaccination-upload/:id', authRequired, async (req, res) => {
     img = req.body.location;
     const pet = await petsModel.getById(req.query.customer_id, req.params.id);
     if (pet !== undefined) {
-      const new_data = await petsModel.update(req.query.customer_id, req.params.id, {vaccination_image_url: img});
-      res.status(200).json({ message: 'Pet vaccination updated', Profile: new_data });
+      const new_data = await petsModel.update(
+        req.query.customer_id,
+        req.params.id,
+        { vaccination_image_url: img }
+      );
+      res
+        .status(200)
+        .json({ message: 'Pet vaccination updated', Profile: new_data });
     } else {
       res.status(400).json({ message: 'Pet does not exist' });
     }
